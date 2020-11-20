@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ShowAllFiles>true</ShowAllFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerCommand>C:\Program Files\Sega\SONICADVENTUREDX\sonic.exe </LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-l ssgarden</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>C:\Program Files\Sega\SONICADVENTUREDX\</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+</Project>
