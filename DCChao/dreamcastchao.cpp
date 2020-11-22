@@ -838,6 +838,9 @@ void __cdecl AL_MotionInit(ObjectMaster* a1)
 FunctionPointer(void, sub_757100, (EntityData1* a1, int a2), 0x757100);
 void __cdecl sub_757100_Hook(EntityData1* a1, int a2)
 {
+	Alr* race = (Alr*)a1->LoopData;
+	PrintDebug("pATH POS %f \n", race->pathpos  );
+	//race->use_path = 2;
 	int temp = *(int*)((int)a2 + 0x8D0);
 	ObjectMaster* obj = (ObjectMaster*)temp;
 	chaowk* wk = (chaowk*)obj->Data1;
@@ -859,6 +862,83 @@ static void __declspec(naked) ALR_DashHook()
 		pop edi // a1
 		pop esi // a2
 		retn
+	}
+}
+struct AlrRootAnswer
+{
+	void* tag;
+	float minpath_pathpos;
+	float main_pathpos;
+};
+FunctionPointer(signed int,  GetStatusOnPath, (int a1, int a2), 0x0049C330);
+FunctionPointer(float, sub_49C670, (int a1, NJS_VECTOR* a2, int a3, float* a4),0x49C670);
+DataArray(int*, off_3673640, 0x3673640, 3);
+DataArray(char, usepath, 0x08890BC, 5);
+void __cdecl AlrRoot_GetAnswer(EntityData1* a1, int a2, AlrRootAnswer* a3, int use_shortcut)
+{
+	EntityData1* v4; // edi
+	int v5; // ebx
+	int v6; // ST00_4
+	Angle i; // ebx
+	int v8; // eax
+	int v9; // esi
+	Loop* v10; // eax
+	double v11; // st7
+	double v12; // st6
+	double v13; // st5
+	float v14; // ST0C_4
+	double v15; // st7
+	float a4a; // [esp+14h] [ebp-Ch]
+	int v17; // [esp+18h] [ebp-8h]
+	int v18; // [esp+1Ch] [ebp-4h]
+	float a1a; // [esp+24h] [ebp+4h]
+
+	v4 = a1;
+	v5 = (int)a1->LoopData;
+	v6 = *(_DWORD*)(v5 + 4 * a1->Rotation.x);
+	v18 = (int)a1->LoopData;
+	a1a = sub_49C670(v6, (NJS_VECTOR*)a2, 0, &a3->main_pathpos);
+	a3->minpath_pathpos = a3->main_pathpos;
+	a3->tag = *(void**)(v5 + 4 * v4->Rotation.x);
+	if (v4->Object)
+	{
+		v17 = *(unsigned char*)0x3CD370A;
+		for (i = 0; i < v4->Rotation.x; ++i)
+		{
+			v8 = (unsigned __int8)usepath[v17];
+			if (use_shortcut != 1)
+			{
+				v8 &= ~1u;
+			}
+			if ((1 << i) & v8)
+			{
+				v9 = *(_DWORD*)(v18 + 4 * i);
+				a4a = 0.0f;
+				if (*(float*)((int)v4->Object + 8 * i) < (double)a3->main_pathpos)
+				{
+					v15 = sub_49C670(v9, (NJS_VECTOR*)a2, 0, &a4a);
+				}
+				else
+				{
+					v10 = *(Loop * *)(v9 + 8);
+					v11 = *(float*)a2 - v10->Position.x;
+					v12 = *(float*)(a2 + 4) - v10->Position.y;
+					v13 = *(float*)(a2 + 8) - v10->Position.z;
+					v14 = v13 * v13 + v12 * v12 + v11 * v11;
+					v15 = squareroot(v14);
+				}
+				if (*(float*)(v9 + 4) - 10.0 < a4a)
+				{
+					return;
+				}
+				if (v15 <= a1a)
+				{
+					a1a = v15;
+					a3->minpath_pathpos = a4a;
+					a3->tag = (void*)v9;
+				}
+			}
+		}
 	}
 }
 
@@ -959,6 +1039,8 @@ void DreamcastChao_Init(const char* path)
 	WriteJump((void*)0x00734EE0, AL_MotionControl);  //race motion controller
 	WriteJump((void*)0x00764B10, Chao_SetAnimVars); //race motion setup
 	WriteCall((void*)0x007574D2, sub_757100_Hook); //before-after race action controller 
+
+	WriteJump((void*)0x00751F30, AlrRoot_GetAnswer);
 
 	//face
 	//WriteJump((void*)AL_FaceSetEye, AL_FaceSetEye_);
