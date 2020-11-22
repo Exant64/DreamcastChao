@@ -23,7 +23,7 @@ struct ADV1_AL_MOTION_CTRL
 	float pframe;
 	float lframe;
 	float link_ratio;
-	float* multi_spd;//float multi_spd;
+	float multi_spd;
 	al_motion_table* motion_table;
 	
 };
@@ -258,6 +258,35 @@ struct AL_ZONE
 };
 FunctionPointer(void, sub_408530, (NJS_OBJECT* a1), 0x408530);
 FunctionPointer(void, AL_CalcMotionMartix, (al_object* a1), 0x00765010);
+struct __declspec(align(4)) AL_FACE_CTRL_
+{
+	int EyeTimer;
+	__int16 EyeColorNum;
+	__int16 EyeCurrNum;
+	__int16 EyeDefaultNum;
+	int MouthTimer;
+	__int16 MouthCurrNum;
+	__int16 MouthDefaultNum;
+	float EyePosX;
+	float EyePosY;
+	float EyeSclX;
+	float EyeSclY;
+	unsigned int Flag;
+	al_object* pEyeObject[2];
+	al_object* pMouthObject;
+	int EyeLidBlinkMode;
+	int EyeLidBlinkTimer;
+	int EyeLidBlinkAng;
+	int EyeLidExpressionMode;
+	int EyeLidExpressionTimer;
+	int EyeLidExpressionDefaultCloseAng;
+	int EyeLidExpressionCurrCloseAng;
+	int EyeLidExpressionAimCloseAng;
+	int EyeLidExpressionDefaultSlopeAng;
+	int EyeLidExpressionCurrSlopeAng;
+	int EyeLidExpressionAimSlopeAng;
+};
+
 #pragma pack(push, 8)
 struct __declspec(align(8)) chaowk
 {
@@ -287,7 +316,7 @@ struct __declspec(align(8)) chaowk
 	MOTION_TABLE MiniMotionTable[4];
 	AL_BEHAVIOR Behavior;
 	AL_SHAPE Shape;
-	AL_FACE_CTRL Face;
+	AL_FACE_CTRL_ Face;
 	AL_ICON Icon;
 	AL_ZONE Zone;
 	AL_PERCEPTION Perception;

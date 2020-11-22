@@ -244,12 +244,14 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 
 		//if (ChaoNodeIndex == 18 || ChaoNodeIndex == 21) njSetTexture(&ChaoTexLists[2]);
 		//if(CurrentChaoStage != 1)
-
+		/*
 		if (ChaoNodeIndex == 28) {
 			NJS_MODEL_SADX* sadx = (NJS_MODEL_SADX*)a2->pModel;
 			if (sadx->mats[0].attr_texId < 100)
 				njSetTexture(&ChaoTexLists[5]);
+			else njSetTexture(&CHAO_TEXLIST);
 		}
+		*/
 		if (ChaoNodeIndex == 18)
 		{
 			njTranslate(0, ((chaowk*)a1->Data1)->Face.EyePosX, ((chaowk*)a1->Data1)->Face.EyePosY, 0.0);
@@ -498,15 +500,53 @@ void __cdecl Chao_SetMouth_(ObjectMaster* a1, ChaoMouth a2, int timer)
 {
 	chaowk* data1 = (chaowk*)a1->Data1;
 	data1->Face.MouthTimer = timer;
+	
 	uint16_t* a2a;
 	if ((unsigned __int8)data1->pParamGC->Type < ChaoType_Neutral_Chaos || (unsigned __int8)data1->pParamGC->Type > ChaoType_Dark_Chaos)
 		a2a = &word_88733C[2 * a2];
 	else
 		a2a = word_88733C;
+	int copy[2];
+	copy[0] = a2a[0];
+	copy[1] = a2a[1];
+	for(int i = 0; i < 2; i++)
+	switch(copy[i])
+	{
+	case 1:
+		copy[i] = 176;
+		break;
+	case 2:
+		copy[i] = 177;
+		break;
+	case 3:
+		copy[i] = 179;
+		break;
+	case 4:
+		copy[i] = 175;
+		break;
+	case 5:
+		copy[i] = 178;
+		break;
+	case 6:
+		copy[i] = 175;
+		break;
+	case 7:
+		copy[i] = 182;
+		break;
+	case 10:
+		copy[i] = 180;
+		break;
+	case 11:
+		copy[i] = 181;
+		break;
+	default:
+		copy[i] = 174;
+		break;
+	}
 	if (data1->Shape.CurrObjectList[28])
 	{
-		((NJS_MODEL_SADX*)data1->Shape.CurrObjectList[28]->pModel)->mats[0].attr_texId = a2a[1];
-		((NJS_MODEL_SADX*)data1->Shape.CurrObjectList[28]->pModel)->mats[1].attr_texId = a2a[0];
+		((NJS_MODEL_SADX*)data1->Shape.CurrObjectList[28]->pModel)->mats[0].attr_texId = copy[1];
+		((NJS_MODEL_SADX*)data1->Shape.CurrObjectList[28]->pModel)->mats[1].attr_texId = copy[0];
 	}
 }
 
@@ -640,7 +680,7 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 
 		return;
 	}
-	motiontable->nframe = paVar3->frame_spd * *motiontable->multi_spd + motiontable->nframe;
+	motiontable->nframe = paVar3->frame_spd * motiontable->multi_spd + motiontable->nframe;
 	if (paVar3->frame_spd <= 0.00000000) {
 		if (0.00000000 <= paVar3->frame_spd) {
 			return;
@@ -654,16 +694,16 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 		if (wVar2 == 2) {
 			motiontable->curr_num = paVar3->next;
 			motiontable->flag |= 8;
-			*motiontable->multi_spd = 1.00000000f;
+			motiontable->multi_spd = 1.00000000f;
 			motiontable->flag |= 0x40;
-			*motiontable->multi_spd = 1.00000000f;
+			motiontable->multi_spd = 1.00000000f;
 			return;
 		}
 		if ((short)wVar2 < 2) {
 			if (wVar2 == 0) {
 				motiontable->nframe = motiontable->nframe - (fVar1 - paVar3->start_frame);
 				motiontable->flag |= 0x40;
-				*motiontable->multi_spd = 1.00000000f;
+				motiontable->multi_spd = 1.00000000f;
 				return;
 			}
 			//mode == 1
@@ -673,7 +713,7 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 			motiontable->flag |= 1;
 			motiontable->flag |= 8;
 			motiontable->flag |= 0x40;
-			*motiontable->multi_spd = 1.00000000;
+			motiontable->multi_spd = 1.00000000;
 			motiontable->link_num = paVar3->next;
 			motiontable->nframe = paVar3->end_frame;
 			motiontable->lframe = motiontable->motion_table[(short)paVar3->next].start_frame;
@@ -686,7 +726,7 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 		motiontable->nframe = fVar1;
 		motiontable->flag |= 2;
 		motiontable->flag |= 0x40;
-		*motiontable->multi_spd = 1.00000000;
+		motiontable->multi_spd = 1.00000000;
 		return;
 	}
 	fVar1 = paVar3->end_frame;
@@ -698,7 +738,7 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 		motiontable->curr_num = paVar3->next;
 		motiontable->flag |= 8;
 		motiontable->flag |= 0x40;
-		*motiontable->multi_spd = 1.00000000;
+		motiontable->multi_spd = 1.00000000;
 		return;
 	}
 	if (1 < (short)wVar2) {
@@ -708,7 +748,7 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 		motiontable->nframe = fVar1 - 0.01000000;
 		motiontable->flag |= 2;
 		motiontable->flag |= 0x40;
-		*motiontable->multi_spd = 1.00000000;
+		motiontable->multi_spd = 1.00000000;
 		return;
 	}
 	if (wVar2 != 0) {
@@ -720,12 +760,12 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 		motiontable->nframe = paVar3->end_frame - 0.01000000;
 		motiontable->lframe = motiontable->motion_table[(short)paVar3->next].start_frame;
 		motiontable->flag |= 0x40;
-		*motiontable->multi_spd = 1.00000000;
+		motiontable->multi_spd = 1.00000000;
 		return;
 	}
 	motiontable->nframe = motiontable->nframe - (fVar1 - paVar3->start_frame);
 	motiontable->flag |= 0x40;
-	*motiontable->multi_spd = 1.00000000;
+	motiontable->multi_spd = 1.00000000;
 
 	return;
 }
@@ -744,7 +784,7 @@ void MotionCtrl2(ADV1_AL_MOTION_CTRL* motiontable)
 			motiontable->mode = motion->mode;
 			motiontable->flag = motiontable->flag & 0xfffe;
 			motiontable->flag = motiontable->flag | 8;
-			*motiontable->multi_spd = 1.00000000;
+			motiontable->multi_spd = 1.00000000;
 		}
 	}
 }
@@ -758,11 +798,10 @@ void __cdecl AL_MotionControl(ObjectMaster* a1)
 		if (CurrentChaoStage == 1)
 		{
 
-			if (((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl)->multi_spd)
-			{
+			
 				MotionCtrl((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
 				MotionCtrl2((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
-			}
+			
 
 		}
 		else
@@ -785,7 +824,7 @@ void __cdecl AL_MotionInit(ObjectMaster* a1)
 		ctrl->req_num = 0;
 		ctrl->motion_table = exportedSA1;
 		ctrl->mode = ctrl->motion_table[ctrl->curr_num].mode;
-		ctrl->multi_spd = 0;//1.00000000;
+		ctrl->multi_spd = 1;
 		ctrl->nframe = ctrl->motion_table[ctrl->curr_num].start_frame;
 		ctrl->flag &= ~0x3F;
 	}
@@ -793,20 +832,17 @@ void __cdecl AL_MotionInit(ObjectMaster* a1)
 		MotionInit(&wk->MotionCtrl, (MOTION_TABLE*)0x036A94E8);
 }
 FunctionPointer(void, sub_757100, (EntityData1* a1, int a2), 0x757100);
-void sub_757100_Hook(EntityData1* a1, int a2)
+void __cdecl sub_757100_Hook(EntityData1* a1, int a2)
 {
 	int temp = *(int*)((int)a2 + 0x8D0);
 	ObjectMaster* obj = (ObjectMaster*)temp;
 	chaowk* wk = (chaowk*)obj->Data1;
-
-	sub_757100(a1, a2);
-	//todo eyelid after
-
 	ADV1_AL_MOTION_CTRL* ctrl = (ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl;
-	if (!ctrl->multi_spd) {
-		((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd = (float*)(a2 + 0x134);
-		*ctrl->multi_spd = 1.0f;
-	}
+	*(float*)(a2 + 0x134) = ((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd;
+	PrintDebug("MOTION SPEED = %f \n", ((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd);
+	sub_757100(a1, a2);
+	((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd = *(float*)(a2 + 0x134);
+	
 }
 static void __declspec(naked) ALR_DashHook()
 {
