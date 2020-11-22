@@ -680,7 +680,11 @@ void MotionCtrl(ADV1_AL_MOTION_CTRL* motiontable)
 
 		return;
 	}
-	motiontable->nframe = paVar3->frame_spd * motiontable->multi_spd + motiontable->nframe;
+	//not port, this is hacked in code to prevent a crash, this happens on the climbing bug for example
+	float usedSpeed = motiontable->multi_spd;
+	if (usedSpeed < 0)
+		usedSpeed *= -1;
+	motiontable->nframe = paVar3->frame_spd * usedSpeed + motiontable->nframe;
 	if (paVar3->frame_spd <= 0.00000000) {
 		if (0.00000000 <= paVar3->frame_spd) {
 			return;
@@ -839,10 +843,8 @@ void __cdecl sub_757100_Hook(EntityData1* a1, int a2)
 	chaowk* wk = (chaowk*)obj->Data1;
 	ADV1_AL_MOTION_CTRL* ctrl = (ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl;
 	*(float*)(a2 + 0x134) = ((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd;
-	PrintDebug("MOTION SPEED = %f \n", ((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd);
 	sub_757100(a1, a2);
 	((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd = *(float*)(a2 + 0x134);
-	
 }
 static void __declspec(naked) ALR_DashHook()
 {
