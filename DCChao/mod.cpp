@@ -1,8 +1,9 @@
+#include "pch.h"
 #include "SADXModLoader.h"
 #include "dreamcast.h"
 #include "chao.h"
-
 #include "al_shape_basic.h"
+
 #define ReplaceTextures(a,b) helperFunctions.ReplaceFile("system\\" a ".PVM", "system\\" b ".PVM");
 extern "C"
 {

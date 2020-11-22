@@ -1,7 +1,8 @@
+#include "pch.h"
 #include "SADXModLoader.h"
 #include "al_shape_basic.h"
 #include <string>
-#include <ModelInfo.cpp>
+#include <ModelInfo.h>
 #include "chao.h"
 #include "data/al_motion/alm_rappa_dc.h"
 #include "data/al_motion//al_dc_motion.h"

@@ -1,4 +1,4 @@
-
+#include "pch.h"
 #include "SADXModLoader.h"
 #include <memory>
 #include "al_shape_basic.h"
