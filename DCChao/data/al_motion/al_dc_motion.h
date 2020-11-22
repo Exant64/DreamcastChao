@@ -1178,6 +1178,42 @@ NJS_MKEY_SA animation_00114C6C_mkey_15_rot_0011463C[] = {
 	{ 14, 0xFFFFE44C, 0, 0 }
 };
 
+NJS_MKEY_SA animation_00114C6C_mkey_36_rot_0011481C[] = {
+	{ 0, 0xC16, 0x2F43, 0 },
+	{ 1, 0xC16, 0xFFFFEA00, 0 },
+	{ 2, 0xC16, 0x2F43, 0 },
+	{ 3, 0xC16, 0xFFFFEA00, 0 },
+	{ 4, 0xC16, 0x2F43, 0 },
+	{ 5, 0xC16, 0xFFFFEA00, 0 },
+	{ 6, 0xC16, 0x2F43, 0 },
+	{ 7, 0xC16, 0xFFFFEA00, 0 },
+	{ 8, 0xC16, 0x2F43, 0 },
+	{ 9, 0xC16, 0x246C, 0 },
+	{ 10, 0xC16, 0xC9D, 0 },
+	{ 11, 0xC16, 0xFFFFF4D1, 0 },
+	{ 12, 0xC16, 0xFFFFEA00, 0 },
+	{ 13, 0xC16, 0xCA3, 0 },
+	{ 14, 0xC16, 0x2F43, 0 }
+};
+
+NJS_MKEY_SA animation_00114C6C_mkey_38_rot_0011490C[] = {
+	{ 0, 0xFFFFF3EA, 0xFFFFD0BD, 0 },
+	{ 1, 0xFFFFF3EA, 0x1600, 0 },
+	{ 2, 0xFFFFF3EA, 0xFFFFD0BD, 0 },
+	{ 3, 0xFFFFF3EA, 0x1600, 0 },
+	{ 4, 0xFFFFF3EA, 0xFFFFD0BD, 0 },
+	{ 5, 0xFFFFF3EA, 0x1600, 0 },
+	{ 6, 0xFFFFF3EA, 0xFFFFD0BD, 0 },
+	{ 7, 0xFFFFF3EA, 0x1600, 0 },
+	{ 8, 0xFFFFF3EA, 0xFFFFD0BD, 0 },
+	{ 9, 0xFFFFF3EA, 0xFFFFDB94, 0 },
+	{ 10, 0xFFFFF3EA, 0xFFFFF363, 0 },
+	{ 11, 0xFFFFF3EA, 0xB2F, 0 },
+	{ 12, 0xFFFFF3EA, 0x1600, 0 },
+	{ 13, 0xFFFFF3EA, 0xFFFFF35D, 0 },
+	{ 14, 0xFFFFF3EA, 0xFFFFD0BD, 0 }
+};
+
 NJS_MDATA2 animation_00114C6C_mdat_001149FC[] = {
 	{ NULL, NULL, 0, 0 },
 	{ animation_00114C6C_mkey_1_pos_00113EBC, animation_00114C6C_mkey_1_rot_00113FAC, LengthOfArray<Uint32>(animation_00114C6C_mkey_1_pos_00113EBC), LengthOfArray<Uint32>(animation_00114C6C_mkey_1_rot_00113FAC) },
@@ -1215,9 +1251,9 @@ NJS_MDATA2 animation_00114C6C_mdat_001149FC[] = {
 	{ NULL, NULL, 0, 0 },
 	{ NULL, NULL, 0, 0 },
 	{ NULL, NULL, 0, 0 },
+	{ NULL, animation_00114C6C_mkey_36_rot_0011481C, 0, LengthOfArray<Uint32>(animation_00114C6C_mkey_36_rot_0011481C) },
 	{ NULL, NULL, 0, 0 },
-	{ NULL, NULL, 0, 0 },
-	{ NULL, NULL, 0, 0 },
+	{ NULL, animation_00114C6C_mkey_38_rot_0011490C, 0, LengthOfArray<Uint32>(animation_00114C6C_mkey_38_rot_0011490C) },
 	{ NULL, NULL, 0, 0 }
 };
 
@@ -7986,24 +8022,24 @@ NJS_MKEY_SA animation_0010BEA0_mkey_15_rot_0010B5D0[] = {
 	{ 5, 0x138, 0, 0 }
 };
 
-NJS_MKEY_F animation_0010BEA0_mkey_35_pos_0010BB30[] = {
-	{ 0, 0.2f, 0.4f, -0.5f },
-	{ 5, 0.2f, 0.4f, -0.5f }
+NJS_MKEY_F animation_0010BEA0_mkey_36_pos_0010BB70[] = {
+	{ 0, 0, 0, 0 },
+	{ 5, 0, 0, 0 }
 };
 
-NJS_MKEY_SA animation_0010BEA0_mkey_35_rot_0010BB50[] = {
-	{ 0, 0, 0x49DA, 0xFFFFF01D },
-	{ 5, 0, 0x49DA, 0xFFFFF01D }
+NJS_MKEY_SA animation_0010BEA0_mkey_36_rot_0010BB90[] = {
+	{ 0, 0, 0, 0 },
+	{ 5, 0, 0, 0 }
 };
 
-NJS_MKEY_F animation_0010BEA0_mkey_37_pos_0010BBB0[] = {
-	{ 0, -0.2f, 0.4f, -0.5f },
-	{ 5, -0.2f, 0.4f, -0.5f }
+NJS_MKEY_F animation_0010BEA0_mkey_38_pos_0010BBF0[] = {
+	{ 0, 0, 0, 0 },
+	{ 5, 0, 0, 0 }
 };
 
-NJS_MKEY_SA animation_0010BEA0_mkey_37_rot_0010BBD0[] = {
-	{ 0, 0, 0x3625, 0xFE3 },
-	{ 5, 0, 0x3625, 0xFE3 }
+NJS_MKEY_SA animation_0010BEA0_mkey_38_rot_0010BC10[] = {
+	{ 0, 0, 0, 0 },
+	{ 5, 0, 0, 0 }
 };
 
 NJS_MDATA2 animation_0010BEA0_mdat_0010BC30[] = {
@@ -8043,9 +8079,9 @@ NJS_MDATA2 animation_0010BEA0_mdat_0010BC30[] = {
 	{ NULL, NULL, 0, 0 },
 	{ NULL, NULL, 0, 0 },
 	{ NULL, NULL, 0, 0 },
-	{ animation_0010BEA0_mkey_35_pos_0010BB30, animation_0010BEA0_mkey_35_rot_0010BB50, LengthOfArray<Uint32>(animation_0010BEA0_mkey_35_pos_0010BB30), LengthOfArray<Uint32>(animation_0010BEA0_mkey_35_rot_0010BB50) },
+	{ animation_0010BEA0_mkey_36_pos_0010BB70, animation_0010BEA0_mkey_36_rot_0010BB90, LengthOfArray<Uint32>(animation_0010BEA0_mkey_36_pos_0010BB70), LengthOfArray<Uint32>(animation_0010BEA0_mkey_36_rot_0010BB90) },
 	{ NULL, NULL, 0, 0 },
-	{ animation_0010BEA0_mkey_37_pos_0010BBB0, animation_0010BEA0_mkey_37_rot_0010BBD0, LengthOfArray<Uint32>(animation_0010BEA0_mkey_37_pos_0010BBB0), LengthOfArray<Uint32>(animation_0010BEA0_mkey_37_rot_0010BBD0) },
+	{ animation_0010BEA0_mkey_38_pos_0010BBF0, animation_0010BEA0_mkey_38_rot_0010BC10, LengthOfArray<Uint32>(animation_0010BEA0_mkey_38_pos_0010BBF0), LengthOfArray<Uint32>(animation_0010BEA0_mkey_38_rot_0010BC10) },
 	{ NULL, NULL, 0, 0 }
 };
 
