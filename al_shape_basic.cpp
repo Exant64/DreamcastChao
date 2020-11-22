@@ -280,7 +280,29 @@ bool IsDark;
 
 short LookUpMorphFlag[] = { 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 4, 5, 2, 4, 5, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0 ,2, 2, 2, 3, 2, 3 };
 
-void MorphChao()
+unsigned int IconColors[] = 
+{
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFF83FE16,//0x16FE83FF,
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFF4BD2FF,//0xFFD24BFF,
+	0xFFFF9605,//0x0596FFFF,
+	0xFFFFFF00//0x00FFFFFF,
+};
+
+unsigned int IconColorsOther[] =
+{
+	0x00FFFFFF,//0x00FFFFFF,
+	0x00FFFFFF,//0x00FFFFFF,
+	0x16FE83FF,//0x16FE83FF,
+	0x00FFFFFF,//0x00FFFFFF,
+	0xFFD24BFF,//0xFFD24BFF,
+	0x0596FFFF,//0x0596FFFF,
+	0x00FFFFFF//0x00FFFFFF,
+};
+
+void MorphChao(unsigned int *a1)
 {
 	NJS_VECTOR* originalVertices;
 	NJS_VECTOR* SwimFlyVertices;
@@ -293,6 +315,8 @@ void MorphChao()
 	NJS_MATERIAL* NormalMats;
 	NJS_MATERIAL* RunPowerMats;
 	NJS_MATERIAL* ChildMats;
+
+	int firstObj = 1;
 
 	for (int i = 0; i < 40; i++)
 	{
@@ -315,6 +339,19 @@ void MorphChao()
 						RunPowerVertices = &runpowerm->basicdxmodel->points[j];
 						ChildVertices = &childm->basicdxmodel->points[j];
 
+						originalVertices->x =
+							ModifiedPowerRun * (NormalVertices->x * flt_3CE2C64 + RunPowerVertices->x * PowerRun) +
+							ModifiedFlySwim * (NormalVertices->x * flt_3CE2C4C + SwimFlyVertices->x * FlySwim);
+						originalVertices->x = originalVertices->x * Magnitude + ChildVertices->x * flt_3CE2C04;
+						originalVertices->y =
+							ModifiedPowerRun * (NormalVertices->y * flt_3CE2C64 + RunPowerVertices->y * PowerRun) +
+							ModifiedFlySwim * (NormalVertices->y * flt_3CE2C4C + SwimFlyVertices->y * FlySwim);
+						originalVertices->y = originalVertices->y * Magnitude + ChildVertices->y * flt_3CE2C04;
+						originalVertices->z =
+							ModifiedPowerRun * (NormalVertices->z * flt_3CE2C64 + RunPowerVertices->z * PowerRun) +
+							ModifiedFlySwim * (NormalVertices->z * flt_3CE2C4C + SwimFlyVertices->z * FlySwim);
+						originalVertices->z = originalVertices->z * Magnitude + ChildVertices->z * flt_3CE2C04;
+						/*
 						originalVertices->x = (((SwimFlyVertices->x - NormalVertices->x) * FlySwim + NormalVertices->x)
 							* ModifiedFlySwim
 							+ ((RunPowerVertices->x - NormalVertices->x) * PowerRun + NormalVertices->x)
@@ -322,6 +359,7 @@ void MorphChao()
 							- ChildVertices->x)
 							* Magnitude
 							+ ChildVertices->x;
+						
 						originalVertices->y = (((SwimFlyVertices->y - NormalVertices->y) * FlySwim + NormalVertices->y)
 							* ModifiedFlySwim
 							+ ((RunPowerVertices->y - NormalVertices->y) * PowerRun + NormalVertices->y)
@@ -336,7 +374,7 @@ void MorphChao()
 							- ChildVertices->z)
 							* Magnitude
 							+ ChildVertices->z;
-
+*/
 						originalVertices = &model->basicdxmodel->normals[j];
 						SwimFlyVertices = &swimflym->basicdxmodel->normals[j];
 						NormalVertices = &normalm->basicdxmodel->normals[j];
@@ -366,6 +404,7 @@ void MorphChao()
 							+ ChildVertices->z;
 					}
 
+				if (dontLerp == false)
 				for (int j = 0; j < model->basicdxmodel->nbMat; j++)
 				{
 					originalMats = &model->basicdxmodel->mats[j];
@@ -373,22 +412,75 @@ void MorphChao()
 					NormalMats = &normalm->basicdxmodel->mats[j];
 					RunPowerMats = &runpowerm->basicdxmodel->mats[j];
 					ChildMats = &childm->basicdxmodel->mats[j];
+					
+					float fVar5 = Magnitude;
+					if (fVar5 > 1) fVar5 = 1.0f;
+					float fVar19 = 1.0 - fVar5;
 
-					float v23 = (unsigned __int64)((((double)SwimFlyMats->diffuse.argb.b - (double)NormalMats->diffuse.argb.b) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.b) * flt_3CE2C0C
+					float weirdMagicFloat = 1;
+					float fVar8 = ModifiedPowerRun *
+						(NormalMats->diffuse.argb.r * weirdMagicFloat *
+							flt_3CE2C64 +
+						RunPowerMats->diffuse.argb.r * weirdMagicFloat
+							* PowerRun) +
+						ModifiedFlySwim *
+						(NormalMats->diffuse.argb.r * weirdMagicFloat *
+							flt_3CE2C4C +
+							SwimFlyMats->diffuse.argb.r * weirdMagicFloat * FlySwim);
+					
+					if (fVar8 < 0) fVar8 = 0;
+					if (fVar8 > 255) fVar8 = 255;
+					fVar8 = ChildMats->diffuse.argb.r * fVar19 + fVar8 * fVar5;
+					originalMats->diffuse.argb.r = fVar8;
+					
+					fVar8 = ModifiedPowerRun *
+						(NormalMats->diffuse.argb.g * weirdMagicFloat *
+							flt_3CE2C64 +
+							RunPowerMats->diffuse.argb.g * weirdMagicFloat
+							* PowerRun) +
+						ModifiedFlySwim *
+						(NormalMats->diffuse.argb.g * weirdMagicFloat *
+							flt_3CE2C4C +
+							SwimFlyMats->diffuse.argb.g * weirdMagicFloat * FlySwim);
+					
+					if (fVar8 < 0) fVar8 = 0;
+					if (fVar8 > 255) fVar8 = 255;
+					fVar8 = ChildMats->diffuse.argb.g * fVar19 + fVar8 * fVar5;
+					originalMats->diffuse.argb.g = fVar8;
+					fVar8 = ModifiedPowerRun *
+						(NormalMats->diffuse.argb.b * weirdMagicFloat *
+							flt_3CE2C64 +
+							RunPowerMats->diffuse.argb.b * weirdMagicFloat
+							* PowerRun) +
+						ModifiedFlySwim *
+						(NormalMats->diffuse.argb.b * weirdMagicFloat *
+							flt_3CE2C4C +
+							SwimFlyMats->diffuse.argb.b * weirdMagicFloat * FlySwim);
+					if (fVar8 < 0) fVar8 = 0;
+					if (fVar8 > 255) fVar8 = 255;
+					fVar8 = ChildMats->diffuse.argb.b * fVar19 + fVar8 * fVar5;
+					originalMats->diffuse.argb.b = fVar8;
+					
+					/*
+					float v23 = ((((double)SwimFlyMats->diffuse.argb.b - (double)NormalMats->diffuse.argb.b) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.b) * flt_3CE2C0C
 						+ (((double)RunPowerMats->diffuse.argb.b - (double)NormalMats->diffuse.argb.b) * dword_3CE2C14 + (double)NormalMats->diffuse.argb.b) * flt_3CE2C10);
-					originalMats->diffuse.argb.b = (unsigned __int64)(((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.b) * dword_3CE2C30
+					originalMats->diffuse.argb.b = (((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.b) * dword_3CE2C30
 						+ (double)ChildMats->diffuse.argb.b);
 
-					v23 = (unsigned __int64)((((double)SwimFlyMats->diffuse.argb.r - (double)NormalMats->diffuse.argb.r) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.r) * flt_3CE2C0C
+					v23 = ((((double)SwimFlyMats->diffuse.argb.r - (double)NormalMats->diffuse.argb.r) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.r) * flt_3CE2C0C
 						+ (((double)RunPowerMats->diffuse.argb.r - (double)NormalMats->diffuse.argb.r) * dword_3CE2C14 + (double)NormalMats->diffuse.argb.r) * flt_3CE2C10);
-					originalMats->diffuse.argb.r = (unsigned __int64)(((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.r) * dword_3CE2C30
+					originalMats->diffuse.argb.r = (((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.r) * dword_3CE2C30
 						+ (double)ChildMats->diffuse.argb.r);
 
-					v23 = (unsigned __int64)((((double)SwimFlyMats->diffuse.argb.g - (double)NormalMats->diffuse.argb.g) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.g) * flt_3CE2C0C
+					v23 = ((((double)SwimFlyMats->diffuse.argb.g - (double)NormalMats->diffuse.argb.g) * dword_3CE2C3C + (double)NormalMats->diffuse.argb.g) * flt_3CE2C0C
 						+ (((double)RunPowerMats->diffuse.argb.g - (double)NormalMats->diffuse.argb.g) * dword_3CE2C14 + (double)NormalMats->diffuse.argb.g) * flt_3CE2C10);
-					originalMats->diffuse.argb.g = (unsigned __int64)(((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.g) * dword_3CE2C30
+					originalMats->diffuse.argb.g = (((double)(unsigned __int8)v23 - (double)ChildMats->diffuse.argb.g) * dword_3CE2C30
 						+ (double)ChildMats->diffuse.argb.g);
+						*/
+					if(firstObj)
+						*a1 = originalMats->diffuse.color;
 				}
+				firstObj = 0;
 			}
 		//if (false && (isChild && ) ||
 			//LookUpMorphFlag[i] & 4)
@@ -629,10 +721,43 @@ LABEL_15:
 	flt_3CE2C10 = dword_3CE2C14 * v8;
 	flt_3CE2C0C = v8 * dword_3CE2C3C;
 	v9 = (unsigned __int8)a1->Data1->Index;
-
-	EmotionBallColoring(a1);
-	MorphChao();
-
+	chaowk* wk = (chaowk*)a1->Data1;
+	
+	//EmotionBallColoring(a1);
+	MorphChao(&wk->Icon.Color);
+	int DCType = 0;
+	switch(wk->pParamGC->Type)
+	{
+	case ChaoType_Child:
+		DCType = 0;
+		break;
+	case ChaoType_Neutral_Normal:
+		DCType = 1;
+		break;
+	case ChaoType_Neutral_Swim:
+		DCType = 2;
+		break;
+	case ChaoType_Neutral_Fly:
+		DCType = 3;
+		break;
+	case ChaoType_Neutral_Run:
+		DCType = 4;
+		break;
+	case ChaoType_Neutral_Power:
+		DCType = 5;
+		break;
+	case ChaoType_Neutral_Chaos:
+		DCType = 6;
+		break;
+	}
+	NJS_BGRA* otherColors = (NJS_BGRA*)& IconColors[DCType];
+	NJS_BGRA* iconColor = (NJS_BGRA*)&wk->Icon.Color;
+	iconColor->r *= otherColors->r / 255.0f;
+	iconColor->g *= otherColors->g / 255.0f;
+	iconColor->b *= otherColors->b / 255.0f;
+	//iconColor->a *= otherColors->a;
+	//iconColor->a *= otherColors[DCType].a;
+	//wk->Icon.Color = IconColors[DCType];
 	Chao_SetDreamcastSA2Colors(a1);
 	v1->Shape.Flag &= ~2u;
 }
@@ -688,6 +813,9 @@ DataArray(NJS_OBJECT*, Al_RootObject, 0x034BD4A8, 100);
 void Chao_LoadModels(ObjectMaster* a1)
 {
 	NJS_OBJECT** chaoObjects = Al_RootObject;//(NJS_OBJECT * *)GetProcAddress(GetModuleHandle(L"Data_dll_orig"), "AL_RootObject");
+	//((chaowk*)a1->Data1)->pParamGC->Type = ChaoType_Neutral_Fly;
+	//((chaowk*)a1->Data1)->pParamGC->PowerRun = 1.5f;
+	//((chaowk*)a1->Data1)->pParamGC->EvolutionProgress = 1.5f;
 	int type = ((chaowk*)a1->Data1)->pParamGC->Type;
 	if (type >= 6u && !((type - 6) % 3))
 		type--;

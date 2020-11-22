@@ -38,11 +38,11 @@ extern "C"
 		tree_counter = 0;
 		jointva = joint;
 		if (jointva == 7)
-			jointva = 11;
+			jointva = 11; //correct node index for sa2 skeleton
 		njPushMatrixEx();
 		njUnitMatrix(0);
 		njRotateY(0, a1->Data1->Rotation.y);
-		AL_InitCalcMotionMatrix(a1);
+		AL_InitCalcMotionMatrix(a1); //inits animation values
 		AL_MyCode(a1, ((chaowk*)a1->Data1)->Shape.pObject, vec);
 		njPopMatrixEx();
 		return 1;
@@ -52,12 +52,8 @@ extern "C"
 	{
 		ReplaceTextures("CHAO", "CHAO_DCCWE");
 
-		//test
-		//PrintDebug("DCCHAO TEST %d %d %d \n", LookUpMorphFlag[0x12], LookUpMorphFlag[0x15], LookUpMorphFlag[0x1B]);
-
 		DreamcastChao_Init(path);
 		Dreamcast_Init();
-
 		
 		//fixes restored race toy crash (it was trying to get the sa1 chao model node hierarchy, had to port it to use the sa2 one
 		WriteJump((void*)0x00754D00, ALR_GetBodyPosition);

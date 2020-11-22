@@ -265,7 +265,7 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 		if (ChaoNodeIndex == 19 || ChaoNodeIndex == 22)
 		{
 
-			if (CurrentChaoStage == 1 && eyelidRotX != -0x4000)
+			if (CurrentChaoStage == 1 || eyelidRotX != -0x4000)
 			{
 				njSetZCompare(3u);
 				//DrawCnkModel((NJS_CNK_MODEL*)mdl1same2);
@@ -599,7 +599,6 @@ void __cdecl ADV1toADV2_SetMotionLink(int a1, int a2)
 {
 	int temp = *(int*)((int)a1 + 0x8D0);
 	ObjectMaster* obj = (ObjectMaster*)temp;
-	//AL_SetMotionLink(obj, a2);
 	chaowk* wk = (chaowk*)obj->Data1;
 	ADV1_AL_MOTION_CTRL* adv1 = (ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl;
 	adv1->flag |= 0x10;
@@ -903,7 +902,6 @@ void DreamcastChao_Init(const char* path)
 	//threshold increase for magnitude and hpos/vpos sliders
 	WriteData((float*)0x34BBA00, 1.5f);
 	WriteData((float*)0x34BBA04, 1.5f);
-	
 
 	//model loading
 	for (int i = 0; i < 100; i++) Al_RootObject[i] = nullptr;
@@ -917,7 +915,6 @@ void DreamcastChao_Init(const char* path)
 
 	//motion
 	exportedSA1[0x24].frame_spd *= 0.8f; //drown slow down code thing
-	//WriteJump((void*)0x00765010, AL_CalcMotionMartix);
 	WriteJump((void*)0x0076DAC0, ADV1toADV2_SetMotionLink); //race motion set animation
 	WriteJump((void*)0x00734EC0, AL_MotionInit); //race motion init
 	WriteJump((void*)0x00734EE0, AL_MotionControl);  //race motion controller
