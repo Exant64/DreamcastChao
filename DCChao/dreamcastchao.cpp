@@ -163,13 +163,22 @@ DataPointer(float, ChaoLinkFrame, 0x03CE1370);
 DataArray(NJS_BGRA, ChaoColors, 0x0389D828, 13);
 void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 {
-	//PrintDebug("14 DIFF %f %f\n", ((chaowk*)a1->Data1)->Shape.CurrObjectList[14]->diff.y, ((chaowk*)a1->Data1)->Shape.CurrObjectList[14]->Pos[1]);
+	chaowk* data1 = (chaowk*)a1->Data1;
+	//lazy to write a new hook so im doing this
+	if (ChaoNodeIndex == 0)
+	{
+		njPushMatrixEx();
+		data1->Zone.Ratio = data1->Zone.Ratio + (-data1->Zone.Ratio * 0.15f - (a1->Data1->Scale.z - 1.00000000) * 0.28000000);
+		a1->Data1->Scale.z += data1->Zone.Ratio;
+		a1->Data1->Scale.y = 2 - a1->Data1->Scale.z;
+		njScale(0, a1->Data1->Scale.y, a1->Data1->Scale.z, a1->Data1->Scale.y);
+	}
 	while (1)
 	{
 		njPushMatrixEx();
 		AL_CalcMotionMartix(a2);
 
-		chaowk* data1 = (chaowk*)a1->Data1;
+		
 
 		int eyelidRotX = ((chaowk*)a1->Data1)->Face.EyeLidExpressionCurrCloseAng + ((chaowk*)a1->Data1)->Face.EyeLidBlinkAng - 0x4000;// ;
 		int slope = ((chaowk*)a1->Data1)->Face.EyeLidExpressionCurrSlopeAng;
@@ -295,6 +304,11 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 		if (!a2->pSibling)
 			break;
 		a2 = a2->pSibling;
+	}
+	if (ChaoNodeIndex == 0)
+	{
+		//a1->Data1->Scale
+		njPopMatrixEx();
 	}
 }
 
@@ -839,14 +853,15 @@ FunctionPointer(void, sub_757100, (EntityData1* a1, int a2), 0x757100);
 void __cdecl sub_757100_Hook(EntityData1* a1, int a2)
 {
 	Alr* race = (Alr*)a1->LoopData;
-	PrintDebug("pATH POS %f \n", race->pathpos  );
-	//race->use_path = 2;
 	int temp = *(int*)((int)a2 + 0x8D0);
 	ObjectMaster* obj = (ObjectMaster*)temp;
 	chaowk* wk = (chaowk*)obj->Data1;
+
 	ADV1_AL_MOTION_CTRL* ctrl = (ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl;
 	*(float*)(a2 + 0x134) = ((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd;
+
 	sub_757100(a1, a2);
+
 	((ADV1_AL_MOTION_CTRL*)& wk->MotionCtrl)->multi_spd = *(float*)(a2 + 0x134);
 }
 static void __declspec(naked) ALR_DashHook()
@@ -1044,7 +1059,7 @@ void DreamcastChao_Init(const char* path)
 
 	//face
 	//WriteJump((void*)AL_FaceSetEye, AL_FaceSetEye_);
-	//WriteJump((void*)0x076DF10, ADV1_AL_SetEyeNum);
+	WriteJump((void*)0x076DF10, ADV1_AL_SetEyeNum);
 	//WriteJump((void*)0x76DF50, sub_76DF50);
 	WriteData<2>((char*)0x737440, (char)0); //set eyesclX and eyesclY to 0 instead of 1.0f, since its unused anyways and i use it for the race eye timer
 	WriteJump((void*)0x0075B360, SetTexID); //eye
