@@ -165,9 +165,10 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 {
 	chaowk* data1 = (chaowk*)a1->Data1;
 	//lazy to write a new hook so im doing this
+
+	njPushMatrixEx();
 	if (ChaoNodeIndex == 0)
 	{
-		njPushMatrixEx();
 		data1->Zone.Ratio = data1->Zone.Ratio + (-data1->Zone.Ratio * 0.15f - (a1->Data1->Scale.z - 1.00000000) * 0.28000000);
 		a1->Data1->Scale.z += data1->Zone.Ratio;
 		a1->Data1->Scale.y = 2 - a1->Data1->Scale.z;
@@ -178,7 +179,7 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 		njPushMatrixEx();
 		AL_CalcMotionMartix(a2);
 
-		
+
 
 		int eyelidRotX = ((chaowk*)a1->Data1)->Face.EyeLidExpressionCurrCloseAng + ((chaowk*)a1->Data1)->Face.EyeLidBlinkAng - 0x4000;// ;
 		int slope = ((chaowk*)a1->Data1)->Face.EyeLidExpressionCurrSlopeAng;
@@ -305,11 +306,8 @@ void DrawChaoDC(ObjectMaster* a1, al_object* a2)
 			break;
 		a2 = a2->pSibling;
 	}
-	if (ChaoNodeIndex == 0)
-	{
-		//a1->Data1->Scale
-		njPopMatrixEx();
-	}
+	njPopMatrixEx();
+
 }
 
 void __cdecl Chao_SetAnimVars(ObjectMaster* a1)
@@ -514,7 +512,7 @@ void __cdecl Chao_SetMouth_(ObjectMaster* a1, ChaoMouth a2, int timer)
 {
 	chaowk* data1 = (chaowk*)a1->Data1;
 	data1->Face.MouthTimer = timer;
-	
+
 	uint16_t* a2a;
 	if ((unsigned __int8)data1->pParamGC->Type < ChaoType_Neutral_Chaos || (unsigned __int8)data1->pParamGC->Type > ChaoType_Dark_Chaos)
 		a2a = &word_88733C[2 * a2];
@@ -523,40 +521,40 @@ void __cdecl Chao_SetMouth_(ObjectMaster* a1, ChaoMouth a2, int timer)
 	int copy[2];
 	copy[0] = a2a[0];
 	copy[1] = a2a[1];
-	for(int i = 0; i < 2; i++)
-	switch(copy[i])
-	{
-	case 1:
-		copy[i] = 176;
-		break;
-	case 2:
-		copy[i] = 177;
-		break;
-	case 3:
-		copy[i] = 179;
-		break;
-	case 4:
-		copy[i] = 175;
-		break;
-	case 5:
-		copy[i] = 178;
-		break;
-	case 6:
-		copy[i] = 175;
-		break;
-	case 7:
-		copy[i] = 182;
-		break;
-	case 10:
-		copy[i] = 180;
-		break;
-	case 11:
-		copy[i] = 181;
-		break;
-	default:
-		copy[i] = 174;
-		break;
-	}
+	for (int i = 0; i < 2; i++)
+		switch (copy[i])
+		{
+		case 1:
+			copy[i] = 176;
+			break;
+		case 2:
+			copy[i] = 177;
+			break;
+		case 3:
+			copy[i] = 179;
+			break;
+		case 4:
+			copy[i] = 175;
+			break;
+		case 5:
+			copy[i] = 178;
+			break;
+		case 6:
+			copy[i] = 175;
+			break;
+		case 7:
+			copy[i] = 182;
+			break;
+		case 10:
+			copy[i] = 180;
+			break;
+		case 11:
+			copy[i] = 181;
+			break;
+		default:
+			copy[i] = 174;
+			break;
+		}
 	if (data1->Shape.CurrObjectList[28])
 	{
 		((NJS_MODEL_SADX*)data1->Shape.CurrObjectList[28]->pModel)->mats[0].attr_texId = copy[1];
@@ -816,10 +814,10 @@ void __cdecl AL_MotionControl(ObjectMaster* a1)
 		if (CurrentChaoStage == 1)
 		{
 
-			
-				MotionCtrl((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
-				MotionCtrl2((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
-			
+
+			MotionCtrl((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
+			MotionCtrl2((ADV1_AL_MOTION_CTRL*)& v1->MotionCtrl);
+
 
 		}
 		else
@@ -885,8 +883,8 @@ struct AlrRootAnswer
 	float minpath_pathpos;
 	float main_pathpos;
 };
-FunctionPointer(signed int,  GetStatusOnPath, (int a1, int a2), 0x0049C330);
-FunctionPointer(float, sub_49C670, (int a1, NJS_VECTOR* a2, int a3, float* a4),0x49C670);
+FunctionPointer(signed int, GetStatusOnPath, (int a1, int a2), 0x0049C330);
+FunctionPointer(float, sub_49C670, (int a1, NJS_VECTOR* a2, int a3, float* a4), 0x49C670);
 DataArray(int*, off_3673640, 0x3673640, 3);
 DataArray(char, usepath, 0x08890BC, 5);
 void __cdecl AlrRoot_GetAnswer(EntityData1* a1, int a2, AlrRootAnswer* a3, int use_shortcut)
@@ -1020,7 +1018,7 @@ void __cdecl AL_FaceEyeLidControl_(ObjectMaster* a1)
 		{
 			face->eyelid_keep_timer--;
 			face->EyeLidExpressionCurrSlopeAng = AdjustAngle(face->EyeLidExpressionCurrSlopeAng, face->eyelid_request_express_ang, 0x40);
-			face->EyeLidExpressionCurrCloseAng = AdjustAngle(face->EyeLidExpressionCurrCloseAng, face->eyelid_request_close_ang, 0x100);
+			face->EyeLidExpressionCurrCloseAng = AdjustAngle(face->eyelid_request_close_ang, face->EyeLidExpressionCurrCloseAng, 0x100);
 		}
 		((NJS_OBJECT*)wk->Shape.CurrObjectList[19])->ang[0] = face->EyeLidExpressionCurrCloseAng - 0x4000;
 		((NJS_OBJECT*)wk->Shape.CurrObjectList[19])->ang[1] = face->EyeLidExpressionCurrSlopeAng;
