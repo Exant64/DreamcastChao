@@ -202,8 +202,39 @@ struct ADV1_AL_BODY
 	obj* swim[50];
 	NJS_TEXLIST* tex;
 };
+struct __declspec(align(4)) ADV1_AL_ICON
+{
+	unsigned __int16 flag;
+	unsigned __int16 mode;
+	unsigned __int16 timer;
+	unsigned __int16 next_mode;
+	unsigned __int16 next_timer;
+	NJS_POINT3 pos;
+	NJS_POINT3 velo;
+	NJS_POINT3 diff;
+	int phase;
+	unsigned __int16 timer_u;
+	unsigned __int16 icon_num_u;
+	unsigned __int16 smode_u;
+	float ang_u;
+	float ang_spd_u;
+	NJS_POINT3 pos_u;
+	NJS_POINT3 velo_u;
+	NJS_POINT3 scl_u;
+	NJS_POINT3 sclspd_u;
+	unsigned __int16 timer_d;
+	unsigned __int16 icon_num_d;
+	unsigned __int16 smode_d;
+	float ang_d;
+	float ang_spd_d;
+	NJS_POINT3 pos_d;
+	NJS_POINT3 velo_d;
+	NJS_POINT3 scl_d;
+	NJS_POINT3 sclspd_d;
+	NJS_COLOR col;
+};
 
-struct alifewk
+struct __declspec(align(4)) alifewk
 {
 	int work;
 	NJS_POINT3 velo;
@@ -258,6 +289,7 @@ struct alifewk
 	ADV1_AL_MOTION_CTRL motion_ctrl;
 	ADV1_AL_SHADOW shadow;
 	ADV1_AL_BODY body;
+	ADV1_AL_ICON icon;
 };
 struct ADV1_AL_FACE
 {

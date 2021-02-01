@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\</OutDir>
+    <OutDir>C:\Program Files\Sega\SONICADVENTUREDX\mods\DreamcastChao</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,6 +161,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="adv1\adv1_al_icon.h" />
+    <ClInclude Include="adv1\adv1_al_motion.h" />
     <ClInclude Include="al_race.h" />
     <ClInclude Include="al_shape_basic.h" />
     <ClInclude Include="chao.h" />
@@ -177,6 +179,8 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="adv1\adv1_al_icon.cpp" />
+    <ClCompile Include="adv1\adv1_al_motion.cpp" />
     <ClCompile Include="al_race.cpp" />
     <ClCompile Include="al_shape_basic.cpp" />
     <ClCompile Include="dllmain.cpp" />

@@ -2,11 +2,13 @@
 #include "SADXModLoader.h"
 #include <memory>
 #include "al_shape_basic.h"
+#include "chao.h"
+#include "al_race.h"
 //#include "al_shape.h"
 //#include "MemAccess.h"
 //#include "Chao.h"
 //#include "al_animation.h"
-#include "chao.h"
+
 
 Uint16 Chao_ColorSetNodes[] =
 {
@@ -722,9 +724,10 @@ LABEL_15:
 	flt_3CE2C0C = v8 * dword_3CE2C3C;
 	v9 = (unsigned __int8)a1->Data1->Index;
 	chaowk* wk = (chaowk*)a1->Data1;
-	
+	ADV1_AL_ICON* icon = (ADV1_AL_ICON*)&wk->Icon;
 	//EmotionBallColoring(a1);
-	MorphChao(&wk->Icon.Color);
+	//MorphChao(&wk->Icon.Color);
+	MorphChao(&icon->col.color);
 	int DCType = 0;
 	switch(wk->pParamGC->Type)
 	{
@@ -750,11 +753,13 @@ LABEL_15:
 		DCType = 6;
 		break;
 	}
+	
 	NJS_BGRA* otherColors = (NJS_BGRA*)& IconColors[DCType];
-	NJS_BGRA* iconColor = (NJS_BGRA*)&wk->Icon.Color;
+	NJS_BGRA* iconColor = &icon->col.argb;
 	iconColor->r *= otherColors->r / 255.0f;
 	iconColor->g *= otherColors->g / 255.0f;
 	iconColor->b *= otherColors->b / 255.0f;
+	//icon->col.color = 0xFFFFFFFF;
 	//iconColor->a *= otherColors->a;
 	//iconColor->a *= otherColors[DCType].a;
 	//wk->Icon.Color = IconColors[DCType];
@@ -836,11 +841,6 @@ void Chao_LoadModels(ObjectMaster* a1)
 	((chaowk*)a1->Data1)->Shape.pObjectListD = (AL_GROUP_OBJECT_LIST*)_HeapAlloc(1, sizeof(AL_GROUP_OBJECT_LIST));
 
 	AL_GetObjectList((NJS_OBJECT*)((chaowk*)a1->Data1)->Shape.pObject, (NJS_OBJECT * *)((chaowk*)a1->Data1)->Shape.CurrObjectList);
-	
-	for(int i = 0; i < 40; i++)
-	{
-	
-	}
 
 	if (((chaowk*)a1->Data1)->Shape.pObjectList)
 	{
