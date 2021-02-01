@@ -5,6 +5,17 @@
 #include <cstddef>
 #include "adv1_al_icon.h"
 #include <random>
+unsigned int IconColors[] =
+{
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFF83FE16,//0x16FE83FF,
+	0xFFFFFF00,//0x00FFFFFF,
+	0xFF4BD2FF,//0xFFD24BFF,
+	0xFFFF9605,//0x0596FFFF,
+	0xFFFFFF00//0x00FFFFFF,
+};
+
 void FUN_80518dc4(ADV1_AL_ICON* icon)
 
 {
@@ -610,6 +621,38 @@ void ADV1_AL_IconDraw(ObjectMaster* a1)
 		return;
 	}
 	ADV1_AL_ICON* icon = (ADV1_AL_ICON*)&wk->Icon;
+
+	int DCType = 0;
+	switch (wk->pParamGC->Type)
+	{
+	case ChaoType_Child:
+		DCType = 0;
+		break;
+	case ChaoType_Neutral_Normal:
+		DCType = 1;
+		break;
+	case ChaoType_Neutral_Swim:
+		DCType = 2;
+		break;
+	case ChaoType_Neutral_Fly:
+		DCType = 3;
+		break;
+	case ChaoType_Neutral_Run:
+		DCType = 4;
+		break;
+	case ChaoType_Neutral_Power:
+		DCType = 5;
+		break;
+	case ChaoType_Neutral_Chaos:
+		DCType = 6;
+		break;
+	}
+
+	NJS_BGRA* otherColors = (NJS_BGRA*)&IconColors[DCType];
+	NJS_BGRA* iconColor = &icon->col.argb;
+	iconColor->r *= otherColors->r / 255.0f;
+	iconColor->g *= otherColors->g / 255.0f;
+	iconColor->b *= otherColors->b / 255.0f;
 
 	NJS_POINT3COL col;
 	NJS_POINT3 p[4];

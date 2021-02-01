@@ -257,7 +257,7 @@ void __cdecl Chao_SetAnimVars(ObjectMaster* a1)
 
 void DCChao_Motion_Init()
 {
-	exportedSA1[0x24].frame_spd *= 0.8f; //drown slow down code thing
+	exportedSA1[0x24].frame_spd *= 0.8f; //drown slow down code thing, normally this is done in code using the mulspd but this should be good enough too
 	WriteJump((void*)0x0076DAC0, ADV1toADV2_SetMotionLink); //race motion set animation
 	WriteJump((void*)0x00734EC0, AL_MotionInit); //race motion init
 	WriteJump((void*)0x00734EE0, AL_MotionControl);  //race motion controller

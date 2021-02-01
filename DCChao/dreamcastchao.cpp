@@ -836,18 +836,19 @@ void DreamcastChao_Init(const char* path)
 	WriteCall((void*)0x007574D2, sub_757100_Hook); //before-after race controller 
 
 	//ICON
-	//ICON COLOR HANDLED IN al_shape_basic.cpp, sub_767790
+	//icon color also handled in al_shape_basic.cpp, MorphChao, they get the color from the first material
+	WriteJump((void*)0x736EE0, ADV1_AL_InitIcon);		//overwrite icon init
 	WriteJump((void*)0x7364D0, ADV1_AL_IconDraw);		//overwrite display
 	WriteJump((void*)0x736140, ADV1_AL_IconControl);	//overwrite control
-	WriteJump((void*)0x007360A0, nullsub);	//kill iconresetpos, this is only needed for the icon jiggle but dc doesnt have that
-	WriteJump((void*)0x0735060, nullsub);	//kill calciconcolor
-	WriteJump((void*)0x00736EC0, AL_IconReset); //iconreset
-	WriteJump((void*)0x736EE0, ADV1_AL_InitIcon); //custom icon init
-	WriteData<6>((char*)0x00765165, (char)0x90); //kill posphase
-	WriteData<9>((char*)0x0076516B, (char)0x90); //kill posphase2
+	WriteJump((void*)0x00736EC0, AL_IconReset);			//overwrite iconreset
+	WriteJump((void*)0x00736E90, AL_IconSet_DC);		//overwrite icon set
+	WriteJump((void*)0x007360A0, nullsub);				//kill iconresetpos, this is only needed for the icon jiggle but dc doesnt have that
+	WriteJump((void*)0x0735060, nullsub);				//kill calciconcolor
+	WriteData<6>((char*)0x00765165, (char)0x90);		//kill posphase
+	WriteData<9>((char*)0x0076516B, (char)0x90);		//kill posphase2
 	WriteData((int*)0x00765176, (int)0x07C + 0x38 + 4 + 0x700); //posY set offset patch (only made to not mess up float instructions)
 	WriteData((int*)0x765138, (int)(0x70C)); //get icon pos in GetShadowPos
-	WriteJump((void*)0x00736E90, AL_IconSet_DC); //custom icon set
+	
 
 	//model rendering
 	WriteJump((void*)0x00741F20, Chao_UpdateModel);

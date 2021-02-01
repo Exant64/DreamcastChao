@@ -282,28 +282,6 @@ bool IsDark;
 
 short LookUpMorphFlag[] = { 2, 1, 2, 1, 2, 2, 1, 2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 4, 5, 2, 4, 5, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0 ,2, 2, 2, 3, 2, 3 };
 
-unsigned int IconColors[] = 
-{
-	0xFFFFFF00,//0x00FFFFFF,
-	0xFFFFFF00,//0x00FFFFFF,
-	0xFF83FE16,//0x16FE83FF,
-	0xFFFFFF00,//0x00FFFFFF,
-	0xFF4BD2FF,//0xFFD24BFF,
-	0xFFFF9605,//0x0596FFFF,
-	0xFFFFFF00//0x00FFFFFF,
-};
-
-unsigned int IconColorsOther[] =
-{
-	0x00FFFFFF,//0x00FFFFFF,
-	0x00FFFFFF,//0x00FFFFFF,
-	0x16FE83FF,//0x16FE83FF,
-	0x00FFFFFF,//0x00FFFFFF,
-	0xFFD24BFF,//0xFFD24BFF,
-	0x0596FFFF,//0x0596FFFF,
-	0x00FFFFFF//0x00FFFFFF,
-};
-
 void MorphChao(unsigned int *a1)
 {
 	NJS_VECTOR* originalVertices;
@@ -728,37 +706,7 @@ LABEL_15:
 	//EmotionBallColoring(a1);
 	//MorphChao(&wk->Icon.Color);
 	MorphChao(&icon->col.color);
-	int DCType = 0;
-	switch(wk->pParamGC->Type)
-	{
-	case ChaoType_Child:
-		DCType = 0;
-		break;
-	case ChaoType_Neutral_Normal:
-		DCType = 1;
-		break;
-	case ChaoType_Neutral_Swim:
-		DCType = 2;
-		break;
-	case ChaoType_Neutral_Fly:
-		DCType = 3;
-		break;
-	case ChaoType_Neutral_Run:
-		DCType = 4;
-		break;
-	case ChaoType_Neutral_Power:
-		DCType = 5;
-		break;
-	case ChaoType_Neutral_Chaos:
-		DCType = 6;
-		break;
-	}
-	
-	NJS_BGRA* otherColors = (NJS_BGRA*)& IconColors[DCType];
-	NJS_BGRA* iconColor = &icon->col.argb;
-	iconColor->r *= otherColors->r / 255.0f;
-	iconColor->g *= otherColors->g / 255.0f;
-	iconColor->b *= otherColors->b / 255.0f;
+
 	//icon->col.color = 0xFFFFFFFF;
 	//iconColor->a *= otherColors->a;
 	//iconColor->a *= otherColors[DCType].a;
